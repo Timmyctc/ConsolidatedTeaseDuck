@@ -1,4 +1,4 @@
-package com.luv2code.springboot.consolidatedteaseduck.dto;
+package com.luv2code.springboot.consolidatedteaseduck.reading.dto;
 
 import com.luv2code.springboot.consolidatedteaseduck.domain.AggregationType;
 import com.luv2code.springboot.consolidatedteaseduck.domain.MetricType;

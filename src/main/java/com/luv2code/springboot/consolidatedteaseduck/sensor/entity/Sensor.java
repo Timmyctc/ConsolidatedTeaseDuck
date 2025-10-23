@@ -1,4 +1,4 @@
-package com.luv2code.springboot.consolidatedteaseduck.entity;
+package com.luv2code.springboot.consolidatedteaseduck.sensor.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

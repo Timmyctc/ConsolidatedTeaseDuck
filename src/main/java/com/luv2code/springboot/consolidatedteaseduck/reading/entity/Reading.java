@@ -1,6 +1,7 @@
-package com.luv2code.springboot.consolidatedteaseduck.entity;
+package com.luv2code.springboot.consolidatedteaseduck.reading.entity;
 
 import com.luv2code.springboot.consolidatedteaseduck.domain.MetricType;
+import com.luv2code.springboot.consolidatedteaseduck.sensor.entity.Sensor;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,14 +25,14 @@ public class Reading {
     @JoinColumn(name = "sensor_id", nullable = false)
     private Sensor sensor;
 
-    @Column(nullable = false)
+    @Column(name = "recorded_at" , nullable = false)
     private Instant timestamp;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MetricType metricType;
 
-    @Column(nullable = false)
+    @Column(name ="reading_value", nullable = false)
     private double value;
 
 //    private double temperature;
