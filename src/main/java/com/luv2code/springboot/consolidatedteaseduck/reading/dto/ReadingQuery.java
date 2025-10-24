@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.List;
 
 /**
+ * The record that holds a client's request for reading aggregate data
  *
  * @param sensorNames List of names of the Sensors to retrieve readings from (Optional, if omitted all sensors will be selected)
  * @param metrics List of the metrics to retrieve readings from
@@ -18,14 +19,14 @@ import java.util.List;
  * @param startTime The start of the range to measure (Optional, if omitted default range will be selected)
  * @param endTime The end of the range to measure (Optional, if omitted default range will be selected)
  */
-public record ReadingRequest(
+public record ReadingQuery(
         List<@NotBlank String> sensorNames,
         List<@NotNull MetricType> metrics,
         AggregationType aggregationType,
         Instant startTime,
         Instant endTime) {
 
-    public ReadingRequest {
+    public ReadingQuery {
         if (aggregationType == null) {
             aggregationType = AggregationType.AVG;
         }

@@ -8,6 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
+/**
+ * Sensor entity. Has a generated ID for PK but also a uniquely identifable name
+ */
 @Entity @Table(name = "sensors")
 @Getter
 @Setter

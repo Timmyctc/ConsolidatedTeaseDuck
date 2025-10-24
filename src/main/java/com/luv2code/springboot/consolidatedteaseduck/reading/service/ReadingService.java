@@ -4,7 +4,7 @@ import com.luv2code.springboot.consolidatedteaseduck.domain.MetricType;
 import com.luv2code.springboot.consolidatedteaseduck.exception.UnknownSensorException;
 import com.luv2code.springboot.consolidatedteaseduck.reading.dto.AggregateResult;
 import com.luv2code.springboot.consolidatedteaseduck.reading.dto.CreateReadingRequest;
-import com.luv2code.springboot.consolidatedteaseduck.reading.dto.ReadingRequest;
+import com.luv2code.springboot.consolidatedteaseduck.reading.dto.ReadingQuery;
 import com.luv2code.springboot.consolidatedteaseduck.reading.entity.Reading;
 import com.luv2code.springboot.consolidatedteaseduck.reading.repository.ReadingRepository;
 import com.luv2code.springboot.consolidatedteaseduck.sensor.entity.Sensor;
@@ -40,34 +40,34 @@ public class ReadingService {
     }
 
     @Transactional
-    public List<AggregateResult> aggregate(final ReadingRequest readingRequest) {
+    public List<AggregateResult> aggregate(final ReadingQuery readingQuery) {
 
         log.info("Aggregating for sensors={}, metrics={}, agg={}, start={}, end={}",
-                readingRequest.sensorNames(), readingRequest.metrics(), readingRequest.aggregationType(),
-                readingRequest.startTime(), readingRequest.endTime());
+                readingQuery.sensorNames(), readingQuery.metrics(), readingQuery.aggregationType(),
+                readingQuery.startTime(), readingQuery.endTime());
 
         //Ommission for Sensor/Metric == All, Omission for aggregate == AVG
-        List<String> sensorNames = (readingRequest.sensorNames() == null || readingRequest.sensorNames().isEmpty())
-                ? null : readingRequest.sensorNames();
+        List<String> sensorNames = (readingQuery.sensorNames() == null || readingQuery.sensorNames().isEmpty())
+                ? null : readingQuery.sensorNames();
 
-        List<String> metricNames = (readingRequest.metrics() == null || readingRequest.metrics().isEmpty())
-                ? null : readingRequest.metrics().stream().map(Enum::name).toList();
+        List<String> metricNames = (readingQuery.metrics() == null || readingQuery.metrics().isEmpty())
+                ? null : readingQuery.metrics().stream().map(Enum::name).toList();
 
-        List<ReadingRepository.ReadingProjection> aggregatedResults = readingRepository.getAggregateResult(readingRequest.startTime(),
-                readingRequest.endTime(), sensorNames, metricNames);
+        List<ReadingRepository.ReadingProjection> aggregatedResults = readingRepository.getAggregateResult(readingQuery.startTime(),
+                readingQuery.endTime(), sensorNames, metricNames);
 
         return aggregatedResults.stream().map(r -> new AggregateResult(
                 r.getSensorName(),
                 MetricType.valueOf(r.getMetricType()),
-                readingRequest.aggregationType(),
-                switch (readingRequest.aggregationType()) {
+                readingQuery.aggregationType(),
+                switch (readingQuery.aggregationType()) {
                     case AVG -> r.getAvg();
                     case MIN -> r.getMin();
                     case MAX -> r.getMax();
                 },
                 r.getCount(),
-                readingRequest.startTime(),
-                readingRequest.endTime()
+                readingQuery.startTime(),
+                readingQuery.endTime()
         )).toList();
 
     }

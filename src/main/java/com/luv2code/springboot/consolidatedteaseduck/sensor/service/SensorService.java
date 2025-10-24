@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for Sensor
+ */
 @Service
 public class SensorService {
 
@@ -22,11 +25,10 @@ public class SensorService {
     @Transactional(readOnly = true)
     public List<Sensor> getAllSensors() {
         return repository.findAll();
-        //TODO map to a responseDTO
     }
 
     @Transactional
-    public SensorResponse registerNewSensor(CreateSensorRequest createSensorRequest) {
+    public Sensor registerNewSensor(CreateSensorRequest createSensorRequest) {
         if (repository.existsByNameIgnoreCase(createSensorRequest.name())) {
             throw new DuplicateSensorNameException(createSensorRequest.name());
         } else {
@@ -34,16 +36,8 @@ public class SensorService {
             sensorToAdd.setName(createSensorRequest.name());
             sensorToAdd.setLocation(createSensorRequest.location());
             Sensor savedSensor = repository.save(sensorToAdd);
-            return convertToSensorResponse(savedSensor);
+            return savedSensor;
         }
     }
 
-        public SensorResponse convertToSensorResponse(final Sensor sensor){
-                return new SensorResponse(
-                        sensor.getId(),
-                        sensor.getName(),
-                        sensor.getLocation(),
-                        sensor.getCreatedAt()
-                );
-        }
 }

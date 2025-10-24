@@ -4,7 +4,7 @@ import com.luv2code.springboot.consolidatedteaseduck.domain.AggregationType;
 import com.luv2code.springboot.consolidatedteaseduck.domain.MetricType;
 import com.luv2code.springboot.consolidatedteaseduck.reading.dto.AggregateResult;
 import com.luv2code.springboot.consolidatedteaseduck.reading.dto.CreateReadingRequest;
-import com.luv2code.springboot.consolidatedteaseduck.reading.dto.ReadingRequest;
+import com.luv2code.springboot.consolidatedteaseduck.reading.dto.ReadingQuery;
 import com.luv2code.springboot.consolidatedteaseduck.reading.service.ReadingService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +34,8 @@ public class ReadingController {
 
     @PostMapping("/aggregate")
     @ResponseStatus(HttpStatus.OK)
-    public List<AggregateResult> getAggregateResultList(@Valid @RequestBody ReadingRequest readingRequest) {
-        return readingService.aggregate(readingRequest);
+    public List<AggregateResult> getAggregateResultList(@Valid @RequestBody ReadingQuery readingQuery) {
+        return readingService.aggregate(readingQuery);
     }
 
     @GetMapping("/aggregate")
@@ -51,7 +51,7 @@ public class ReadingController {
         log.info("GET /aggregate called with sensors={}, metrics={}, aggregationType={}, start={}, end={}",
                 sensors, metrics, aggregationType, start, end);
 
-        ReadingRequest req = new ReadingRequest(sensors, metrics, aggregationType, start, end);
+        ReadingQuery req = new ReadingQuery(sensors, metrics, aggregationType, start, end);
         return readingService.aggregate(req);
     }
 
