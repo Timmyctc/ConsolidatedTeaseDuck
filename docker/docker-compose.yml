@@ -1,0 +1,25 @@
+services:
+  app:
+    image: 'consolidated-tease-duck:latest'
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: consolidated-tease-duck
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres_user
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_PROFILES_ACTIVE=postgres
+    ports:
+      - "8080:8080"
+
+  db:
+    image: 'postgres:15-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres_user
+      - POSTGRES_PASSWORD=postgres

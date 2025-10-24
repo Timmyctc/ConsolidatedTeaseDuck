@@ -5,6 +5,7 @@ import com.luv2code.springboot.consolidatedteaseduck.domain.MetricType;
 import com.luv2code.springboot.consolidatedteaseduck.reading.dto.AggregateResult;
 import com.luv2code.springboot.consolidatedteaseduck.reading.dto.CreateReadingRequest;
 import com.luv2code.springboot.consolidatedteaseduck.reading.dto.ReadingQuery;
+import com.luv2code.springboot.consolidatedteaseduck.reading.entity.Reading;
 import com.luv2code.springboot.consolidatedteaseduck.reading.service.ReadingService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -26,16 +27,21 @@ public class ReadingController {
         this.readingService = readingService;
     }
 
+    @GetMapping
+    List<Reading> getAllReadings() {
+        return readingService.getAllReadings();
+    }
+
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public void submitSensorReading(@Valid @RequestBody CreateReadingRequest createReadingRequest) {
-        readingService.registerNewReading(createReadingRequest);
+    public Reading submitSensorReading(@Valid @RequestBody CreateReadingRequest createReadingRequest) {
+        return readingService.registerNewReading(createReadingRequest);
     }
 
     @PostMapping("/aggregate")
     @ResponseStatus(HttpStatus.OK)
     public List<AggregateResult> getAggregateResultList(@Valid @RequestBody ReadingQuery readingQuery) {
-        return readingService.aggregate(readingQuery);
+        return readingService.getAggregatedData(readingQuery);
     }
 
     @GetMapping("/aggregate")
@@ -48,11 +54,9 @@ public class ReadingController {
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant end
     ) {
-        log.info("GET /aggregate called with sensors={}, metrics={}, aggregationType={}, start={}, end={}",
-                sensors, metrics, aggregationType, start, end);
 
-        ReadingQuery req = new ReadingQuery(sensors, metrics, aggregationType, start, end);
-        return readingService.aggregate(req);
+        ReadingQuery request = new ReadingQuery(sensors, metrics, aggregationType, start, end);
+        return readingService.getAggregatedData(request);
     }
 
 

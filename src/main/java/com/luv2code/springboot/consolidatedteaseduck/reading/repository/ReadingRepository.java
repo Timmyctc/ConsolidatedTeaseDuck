@@ -12,11 +12,6 @@ import java.util.List;
 
 public interface ReadingRepository extends JpaRepository<Reading, Long> {
 
-    List<Reading> findBySensorNameAndMetricTypeAndRecordedAtBetween(
-            String sensorName, MetricType metricType, Instant start, Instant end);
-
-//    Reading findBySensorNamesAndMetricTypeContainsAndTimestampBetween
-    //inner projection maps to the custom query below
     //https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html
 
     interface ReadingProjection {
