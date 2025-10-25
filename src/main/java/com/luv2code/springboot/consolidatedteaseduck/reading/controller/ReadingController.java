@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -40,12 +41,12 @@ public class ReadingController {
 
     @PostMapping("/aggregate")
     @ResponseStatus(HttpStatus.OK)
-    public List<AggregateResult> getAggregateResultList(@Valid @RequestBody ReadingQuery readingQuery) {
+    public ResponseEntity<List<AggregateResult>> getAggregateResultList(@Valid @RequestBody ReadingQuery readingQuery) {
         return readingService.getAggregatedData(readingQuery);
     }
 
     @GetMapping("/aggregate")
-    public List<AggregateResult> aggregateGet(
+    public ResponseEntity<List<AggregateResult>> aggregateGet(
             @RequestParam(required = false) List<String> sensors,
             @RequestParam(required = false) List<MetricType> metrics,
             @RequestParam(required = false) AggregationType aggregationType,
@@ -55,9 +56,7 @@ public class ReadingController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant end
     ) {
 
-        ReadingQuery request = new ReadingQuery(sensors, metrics, aggregationType, start, end);
+        final ReadingQuery request = new ReadingQuery(sensors, metrics, aggregationType, start, end);
         return readingService.getAggregatedData(request);
     }
-
-
 }

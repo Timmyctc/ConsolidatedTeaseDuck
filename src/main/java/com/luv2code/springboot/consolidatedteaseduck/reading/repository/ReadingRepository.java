@@ -1,7 +1,5 @@
 package com.luv2code.springboot.consolidatedteaseduck.reading.repository;
 
-import com.luv2code.springboot.consolidatedteaseduck.domain.MetricType;
-import com.luv2code.springboot.consolidatedteaseduck.reading.dto.AggregateResult;
 import com.luv2code.springboot.consolidatedteaseduck.reading.entity.Reading;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
