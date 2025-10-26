@@ -13,7 +13,6 @@ public interface ReadingRepository extends JpaRepository<Reading, Long> {
     //https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html
 
     interface ReadingProjection {
-        String getSensorName();
         String getMetricType();
         Long getCount();
         Double getAvg();
@@ -22,8 +21,7 @@ public interface ReadingRepository extends JpaRepository<Reading, Long> {
     }
 
     @Query(value = """
-      SELECT s.name        AS sensorName,
-             r.metric_type AS metricType,
+      SELECT r.metric_type AS metricType,
              COUNT(*)      AS count,
              AVG(r.reading_value)  AS avg,
              MIN(r.reading_value)  AS min,
@@ -33,7 +31,7 @@ public interface ReadingRepository extends JpaRepository<Reading, Long> {
       WHERE r.recorded_at >= :start AND r.recorded_at < :end
         AND (:sensorNames IS NULL OR s.name IN (:sensorNames))
         AND (:metrics     IS NULL OR r.metric_type IN (:metrics))
-      GROUP BY s.name, r.metric_type
+      GROUP BY r.metric_type
       """, nativeQuery = true)
     List<ReadingProjection> getAggregateResult(
             @Param("start") Instant start,

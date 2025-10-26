@@ -49,11 +49,12 @@ public class ReadingService {
 
     @Transactional
     public ResponseEntity<List<AggregateResult>> getAggregatedData(final ReadingQuery readingQuery) {
-        log.info("Getting Aggregated Data for sensors={}, metrics={}, agg={}, start={}, end={}",
+        log.info("Getting Aggregated Data for user input sensors={}, metrics={}, agg={}, start={}, end={}",
                 readingQuery.sensorNames(), readingQuery.metrics(), readingQuery.aggregationType(),
                 readingQuery.startTime(), readingQuery.endTime());
 
         final HttpHeaders headers = new HttpHeaders();
+
         Map<Boolean,List<String>> sensorMapByIfExists = new HashMap<>();
         sensorMapByIfExists.put(true, new ArrayList<>());
         sensorMapByIfExists.put(false, new ArrayList<>());
@@ -80,8 +81,11 @@ public class ReadingService {
         final List<ReadingRepository.ReadingProjection> aggregatedResults = readingRepository.getAggregateResult(readingQuery.startTime(),
                 readingQuery.endTime(), sensorNames, metricNames);
 
+        log.info("Getting Aggregated Data for sensors={}, metrics={}, agg={}, start={}, end={}",
+                readingQuery.sensorNames(), readingQuery.metrics(), readingQuery.aggregationType(),
+                readingQuery.startTime(), readingQuery.endTime());
+
        final List<AggregateResult> results = aggregatedResults.stream().map(ar -> new AggregateResult(
-                ar.getSensorName(),
                 MetricType.valueOf(ar.getMetricType()),
                 readingQuery.aggregationType(),
                 switch (readingQuery.aggregationType()) {

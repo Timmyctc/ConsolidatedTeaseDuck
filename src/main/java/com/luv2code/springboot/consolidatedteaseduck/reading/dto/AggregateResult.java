@@ -6,7 +6,6 @@ import com.luv2code.springboot.consolidatedteaseduck.domain.MetricType;
 import java.time.Instant;
 
 public record AggregateResult(
-        String sensorName,
         MetricType metricType,
         AggregationType aggregationType,
         Double value,

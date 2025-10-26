@@ -34,7 +34,7 @@ public record ReadingQuery(
         Instant now = Instant.now();
         if (startTime == null || endTime == null) {
             endTime = now;
-            startTime = now.minus(Duration.ofHours(24));
+            startTime = now.minus(Duration.ofDays(7));
         }
     }
 

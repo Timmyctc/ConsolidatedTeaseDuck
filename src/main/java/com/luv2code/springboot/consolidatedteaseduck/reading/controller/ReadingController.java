@@ -39,12 +39,6 @@ public class ReadingController {
         return readingService.registerNewReading(createReadingRequest);
     }
 
-    @PostMapping("/aggregate")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<AggregateResult>> getAggregateResultList(@Valid @RequestBody ReadingQuery readingQuery) {
-        return readingService.getAggregatedData(readingQuery);
-    }
-
     @GetMapping("/aggregate")
     public ResponseEntity<List<AggregateResult>> aggregateGet(
             @RequestParam(required = false) List<String> sensors,
@@ -58,5 +52,11 @@ public class ReadingController {
 
         final ReadingQuery request = new ReadingQuery(sensors, metrics, aggregationType, start, end);
         return readingService.getAggregatedData(request);
+    }
+
+    @PostMapping("/aggregate")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<AggregateResult>> getAggregateResultList(@Valid @RequestBody ReadingQuery readingQuery) {
+        return readingService.getAggregatedData(readingQuery);
     }
 }
