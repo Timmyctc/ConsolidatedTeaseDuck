@@ -130,7 +130,7 @@ supports filters via query params
 
 ###Example Request
 ```bash
-curl --location 'http://localhost:8080/api/v1/readings/aggregate?sensors=sensor-a&aggregationType=MIN&metrics=TEMPERATURE%2CHUMIDITY'
+curl --location 'http://localhost:8080/api/v1/readings/aggregate?sensors=sensor-a&aggregationType=MIN&metrics=TEMPERATURE'
 Query Parameters
 Name	          Type	                Required	            Description
 sensors	        list(string)	        No (Default=ALL)      One or more sensor names to include (omission = ALL)
