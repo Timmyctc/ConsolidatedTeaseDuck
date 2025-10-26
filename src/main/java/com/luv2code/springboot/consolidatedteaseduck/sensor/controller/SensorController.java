@@ -6,6 +6,7 @@ import com.luv2code.springboot.consolidatedteaseduck.sensor.entity.Sensor;
 import com.luv2code.springboot.consolidatedteaseduck.sensor.service.SensorService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,11 @@ public class SensorController {
                 .stream()
                 .map(this::convertToSensorResponse)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<Sensor> getSensorByName(@PathVariable String name) {
+        return sensorService.getSensorByName(name);
     }
 
     /**

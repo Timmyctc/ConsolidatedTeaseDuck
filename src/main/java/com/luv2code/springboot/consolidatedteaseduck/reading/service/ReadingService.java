@@ -18,10 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -58,6 +55,8 @@ public class ReadingService {
 
         final HttpHeaders headers = new HttpHeaders();
         Map<Boolean,List<String>> sensorMapByIfExists = new HashMap<>();
+        sensorMapByIfExists.put(true, new ArrayList<>());
+        sensorMapByIfExists.put(false, new ArrayList<>());
 
         if(readingQuery.sensorNames() != null) {
               sensorMapByIfExists = validateReadingQueryInputs(readingQuery);

@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.HttpHeaders
 import spock.lang.Specification
 
-import java.time.Instant
-
 class ReadingServiceSpec extends Specification {
 
     def readingRepo = Mock(ReadingRepository)
