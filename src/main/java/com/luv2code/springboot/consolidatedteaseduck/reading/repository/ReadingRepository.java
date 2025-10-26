@@ -10,14 +10,13 @@ import java.util.List;
 
 public interface ReadingRepository extends JpaRepository<Reading, Long> {
 
-    //https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html
-
     interface ReadingProjection {
         String getMetricType();
         Long getCount();
         Double getAvg();
         Double getMin();
         Double getMax();
+        Double getSum();
     }
 
     @Query(value = """
@@ -25,7 +24,8 @@ public interface ReadingRepository extends JpaRepository<Reading, Long> {
              COUNT(*)      AS count,
              AVG(r.reading_value)  AS avg,
              MIN(r.reading_value)  AS min,
-             MAX(r.reading_value)  AS max
+             MAX(r.reading_value)  AS max,
+             SUM(r.reading_value)  AS sum
       FROM readings r
       JOIN sensors s ON s.id = r.sensor_id
       WHERE r.recorded_at >= :start AND r.recorded_at < :end

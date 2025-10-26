@@ -28,17 +28,39 @@ public class ReadingController {
         this.readingService = readingService;
     }
 
+    /**
+     * GETs all readings
+     *
+     * @return A list of all the readings
+     */
     @GetMapping
     List<Reading> getAllReadings() {
         return readingService.getAllReadings();
     }
 
+    /**
+     * POSTs a new sensor reading
+     *
+     * @param createReadingRequest
+     * @return
+     */
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Reading submitSensorReading(@Valid @RequestBody CreateReadingRequest createReadingRequest) {
         return readingService.registerNewReading(createReadingRequest);
     }
 
+    /**
+     * GETs aggregated data for the filters supplies. Several defaults apply as documented below
+     *
+     * @param sensors List of Sensors to include in Aggregated Data (Null/Empty implies ALL sensors)
+     * @param metrics List of the Metrics to include in Aggregated Data (Null/Empty implies all metrics)
+     * @param aggregationType The AggregationType of the data. i.e. Min/Max/Average/Sum
+     * @param start Start time of the data requested (If empty will default to period of last 7 days)
+     * @param end End time of the data requested (If empty will default to period of last 7 days)
+     *
+     * @return Returns ResponseEntity containing the list of the Aggregated data grouped by metric type
+     */
     @GetMapping("/aggregate")
     public ResponseEntity<List<AggregateResult>> aggregateGet(
             @RequestParam(required = false) List<String> sensors,
@@ -54,6 +76,12 @@ public class ReadingController {
         return readingService.getAggregatedData(request);
     }
 
+    /**
+     * POSTs a JSON body of the filters to use when getting aggregated data
+     *
+     * @param readingQuery Reading query JSON body to send to the end point
+     * @return
+     */
     @PostMapping("/aggregate")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<AggregateResult>> getAggregateResultList(@Valid @RequestBody ReadingQuery readingQuery) {

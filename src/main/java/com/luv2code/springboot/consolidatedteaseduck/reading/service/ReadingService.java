@@ -92,6 +92,7 @@ public class ReadingService {
                     case AVG -> ar.getAvg();
                     case MIN -> ar.getMin();
                     case MAX -> ar.getMax();
+                    case SUM -> ar.getSum();
                 },
                 ar.getCount(),
                 readingQuery.startTime(),
